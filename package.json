@@ -18,7 +18,7 @@
     "hexo-generator-tipue-search-json": "^1.2.1",
     "hexo-migrator-rss": "^0.1.2",
     "hexo-renderer-ejs": "^0.3.0",
-    "hexo-renderer-marked": "^0.3.0",
+    "hexo-renderer-markdown-it-plus": "^1.0.3",
     "hexo-renderer-pug": "0.0.5",
     "hexo-renderer-sass": "^0.3.2",
     "hexo-renderer-stylus": "^0.3.1",
