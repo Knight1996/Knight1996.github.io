@@ -6,6 +6,7 @@ tags:
 - Github Pages
 categories:
 - 技术
+toc: true
 ---
 
 之前有用过WordPress直接建站，但是WordPress有两个不好的地方：
@@ -111,4 +112,5 @@ deploy:
 [手把手教你使用Hexo + Github Pages搭建个人独立博客](https://linghucong.js.org/2016/04/15/2016-04-15-hexo-github-pages-blog/)
 [MarkDown语法说明(简体中文版)](http://wowubuntu.com/markdown/index.html)
 [hexo的next主题个性化配置教程](http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html)
+[Hexo Markdown 简明语法手册](https://hyxxsfwy.github.io/2016/01/15/Hexo-Markdown-%E7%AE%80%E6%98%8E%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C/)
 
