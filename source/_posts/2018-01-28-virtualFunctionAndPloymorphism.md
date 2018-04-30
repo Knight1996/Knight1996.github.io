@@ -19,7 +19,7 @@ OOP的核心思想是多态性(Ploymorphism)。多态这个词源于希腊语，
 {% codeblock lang:cpp %}
 class CPerson{
     public:
-        virtual vlid hello(){
+        virtual void hello(){
             cout<<"I'm a person."<<endl;
         }
 };
@@ -98,7 +98,7 @@ delete p;
 {% endcodeblock %}
 这样，`delete`时会先调用`~CMan()`再调用`~CPerson()`。
 # 构造函数调用虚函数
-当执行构造函数时，当前对象的类型为构造函数所属的类。所以在构造函数中调用虚函数和调用普通函数是一样的，不会动态联编，被调用的函数来自自己活着基类。
+当执行构造函数时，当前对象的类型为构造函数所属的类。所以在构造函数中调用虚函数和调用普通函数是一样的，不会动态联编，被调用的函数来自自己或者基类。
 {% codeblock lang:cpp %}
 class CPerson{
     public:
