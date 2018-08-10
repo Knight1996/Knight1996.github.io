@@ -6,3 +6,5 @@ node_modules/
 public/
 .deploy*/
 package-lock.json
+blog_s.sh
+git_push.sh
