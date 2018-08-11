@@ -222,7 +222,7 @@ int len = sprintf(s, "%d", i);
 
 
 
-## 字符/行式输入输出<stdio.h>
+## 字符/行式输入输出
 
 ### 字符输入输出 fgetc fputc
 
