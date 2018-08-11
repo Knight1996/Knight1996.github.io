@@ -2,7 +2,7 @@
 title: C++ string使用
 date: 2018-04-30 15:59:20
 tags:
-- C++
+- C++/C
 categories:
 - 技术
 toc: true

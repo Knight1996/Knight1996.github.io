@@ -2,7 +2,7 @@
 title: C++中的虚函数和多态
 date: 2018-01-28 16:28:26
 tags:
-- C++
+- C++/C
 - 虚函数
 - 多态
 categories:
