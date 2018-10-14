@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> C语言一些常用函数总结 · knightyui's blog</title><meta name="description" content="C语言一些常用函数总结 - knightyui"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://blog.knightyui.com/atom.xml" title="knightyui's blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://www.weibo.com/knightyui" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/knightyui" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">C语言一些常用函数总结</h1><div class="post-info">2018年8月11日</div><div class="post-content"><p>最近刚刚入职，公司的开发语言是C，入职以来每天就是做做OJ，以前没有专门学过C语言，也碰到了不少很常用但是我不知道的库函数。<br>
+总结才能更好的提升，趁着周末总结一下常用的C语言函数吧。<a id="more"></a></p>
+<h1 id="标准头文件"><a class="markdownIt-Anchor" href="#标准头文件"></a> 标准头文件</h1>
+<p>首先总结一下C语言的标准头文件，主要包括下面的这些</p>
+<p>&lt;asset.h&gt;   &lt;ctype.h&gt;   &lt;errno.h&gt;   &lt;float.h&gt;<br>
+&lt;limits.h&gt;  &lt;locale.h&gt;  &lt;math.h&gt;    &lt;setjmp.h&gt;<br>
+&lt;signal.h&gt;  &lt;stdarg.h&gt;  &lt;stddef.h&gt;  &lt;stdlib.h&gt;<br>
+&lt;stdio.h&gt;   &lt;string.h&gt;  &lt;time.h&gt;</p>
+<p>个人比较常用的就是 &lt;stdlib.h&gt; &lt;stdio.h&gt; &lt;string.h&gt;</p>
+<h1 id="输入输出函数stdioh"><a class="markdownIt-Anchor" href="#输入输出函数stdioh"></a> 输入输出函数&lt;stdio.h&gt;</h1>
+<h2 id="格式化输入输出"><a class="markdownIt-Anchor" href="#格式化输入输出"></a> 格式化输入输出</h2>
+<p>经常使用的有 <code>scanf</code>  <code>printf</code> <code>sscanf</code> <code>sprintf</code>这几个函数，下面分别介绍一下。</p>
+<h3 id="scanf-和-sscanf"><a class="markdownIt-Anchor" href="#scanf-和-sscanf"></a> scanf 和 sscanf</h3>
+<p><code>scanf</code> 从 <code>stdin</code> 中接受输入，将数据以指定的格式(format)输出到变量，简单的来说就是从控制台输入。 函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">scanf</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span></span><br></pre></td></tr></table></figure>
+<p>其中 <code>...</code> 是变长的变量参数，比如 <code>scanf (&quot;%d %f&quot;, &amp;i, &amp;f)</code> 表示将标准输入输入的参数赋值给变量 <code>i</code> 和 <code>f</code> 。</p>
+<p><code>sscanf</code> 从字符串中接受输入，将数据以指定格式输出到变量，常用做将字符串转化为其它变量。利用它可以从字符串中取出整数、浮点数和字符串等等。它的使用方法简单，特别对于整数和浮点数来说。函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sscanf</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *buffer, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span></span><br></pre></td></tr></table></figure>
+<p>两个函数类似，只是 <code>scanf</code> 从控制台中获取输入，而 <code>sscanf</code> 以固定的字符串为输入源。</p>
+<p>常见用法：</p>
+<p>1.从字符串中输入到另外的字符串</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[<span class="number">512</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="built_in">sscanf</span>(<span class="string">"123456"</span>, <span class="string">"%s"</span>, str);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"str=%s\n"</span>, str);        <span class="comment">//输出str=123456</span></span><br></pre></td></tr></table></figure>
+<p>2.取指定长度的字符串。如在下例中，取最大长度为4字节的字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sscanf</span>(<span class="string">"123456 "</span>, <span class="string">"%4s"</span>, str);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"str=%s\n"</span>, str);        <span class="comment">//str的值为1234</span></span><br></pre></td></tr></table></figure>
+<p>3.取到指定字符为止的字符串。如在下例中，取遇到空格为止字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sscanf</span>(<span class="string">"123456 abcdedf"</span>, <span class="string">"%[^ ]"</span>, str);     <span class="comment">//注意^后面有一空格</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"str=%s\n"</span>, str);                    <span class="comment">//str的值为123456</span></span><br></pre></td></tr></table></figure>
+<p>4.取仅包含指定字符集的字符串。如在下例中，取仅包含1到9和小写字母的字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sscanf</span>(<span class="string">"123456abcdedfBCDEF"</span>, <span class="string">"%[1-9a-z]"</span>, str);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"str=%s\n"</span>, str);                            <span class="comment">// str的值为123456abcdedf</span></span><br></pre></td></tr></table></figure>
+<p>5.取到指定字符集为止的字符串。如在下例中，取遇到大写字母为止的字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sscanf</span>(<span class="string">"123456abcdedfBCDEF"</span>, <span class="string">"%[^A-Z]"</span>, str);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"str=%s\n"</span>, str);                            <span class="comment">// str的值为123456abcdedf</span></span><br></pre></td></tr></table></figure>
+<p>下面具体讲解一些例子 <code>%[]</code> 的用法：</p>
+<p><code>%[]</code> 表示要读入一个字符集合, 如果 <code>[</code> 后面第一个字符是 <code>”^”</code> ，则表示反意思。 <code>[]</code> 内的字符串可以是1或更多字符组成。空字符集（<code>%[]</code>）是违反规定的，可导致不可预知的结果。<code>%[^]</code> 也是违反规定的。</p>
+<ul>
+<li><code>%[a-z]</code> 读取在 <code>a-z</code> 之间的字符串，如果不在此区间则停止，如</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> s[] = <span class="string">"hello, my friend”;              // 注意: ,逗号在不在a-z之间</span></span><br><span class="line"><span class="string">sscanf(s, “%[a-z]”, string);                // string=hello</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>%[^a-z]</code> 读取不在 <code>a-z</code> 之间的字符串，如果碰到 <code>a-z</code> 之间的字符则停止，如</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> s[] = <span class="string">"HELLOkitty”;             </span></span><br><span class="line"><span class="string">sscanf(s, “%[^a-z]”, string);           // string=HELLO</span></span><br></pre></td></tr></table></figure>               
+<ul>
+<li><code>%*[^=]</code> 前面带 <code>*</code> 号表示不保存变量。跳过符合条件的字符串。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> s[] = <span class="string">"notepad=1.0.0.1001"</span>;</span><br><span class="line"><span class="keyword">char</span> szfilename [<span class="number">32</span>] = <span class="string">""</span>;</span><br><span class="line"><span class="keyword">int</span> i = <span class="built_in">sscanf</span>(s, <span class="string">"%*[^=]"</span>, szfilename);        <span class="comment">// szfilename=NULL,因为没保存</span></span><br><span class="line"><span class="keyword">int</span> j = <span class="built_in">sscanf</span>(s, <span class="string">"%*[^=]=%s"</span>, szfilename);     <span class="comment">// szfilename=1.0.0.1001</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>%[^=]</code> 读取字符串直到碰到 <code>=</code> 号，<code>^</code> 后面可以带更多字符,如：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> s[]=<span class="string">"notepad=1.0.0.1001"</span>;</span><br><span class="line"><span class="keyword">char</span> szfilename [<span class="number">32</span>] = <span class="string">""</span>;</span><br><span class="line"><span class="keyword">int</span> i = <span class="built_in">sscanf</span>(s, <span class="string">"%[^=]"</span>, szfilename);         <span class="comment">// szfilename=notepad </span></span><br></pre></td></tr></table></figure>
+<h3 id="printf-和-sprintf"><a class="markdownIt-Anchor" href="#printf-和-sprintf"></a> printf 和 sprintf</h3>
+<p><code>printf</code> 将变量以指定格式输出到 <code>stdout</code>，函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span></span><br></pre></td></tr></table></figure>
+<p>例如 <code>printf (&quot;%d&quot;, i)</code> 表示将变量 <code>i</code> 的值送到标准输出,返回值是输出的字符串数量。</p>
+<p><code>sprintf</code> 函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sprintf</span> <span class="params">(<span class="keyword">char</span> *buffer, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span></span><br></pre></td></tr></table></figure>
+<p><code>sprintf()</code> 函数和 <code>printf()</code> 类似，格式控制完全一样，只要是 <code>printf</code> 使用的格式化字符串，在 <code>sprintf</code> 都可以使用，只是把输出发送到buffer(缓冲区)中。返回值是写入的字符数量。</p>
+<p>下面列举一些常用的用法：</p>
+<p>1.格式化数字字符串</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sprintf</span>(s, <span class="string">"%-8X"</span>, <span class="number">12345</span>);          <span class="comment">//s变成：“12345”</span></span><br></pre></td></tr></table></figure>
+<p>大写的X代表，16进制的大写形式。宽度占8个位置， <code>-</code> 代表左对齐。</p>
+<p>2.控制浮点数的打印格式</p>
+<p>浮点数使用格式符 <code>”%f”</code> 控制，默认保留小数点后 6 位数字 <code>%m.nf</code> 格式，其中 m 表示打印的宽度， n 表示小数点后的位数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sprintf</span>(s, <span class="string">"%10.3f"</span>, <span class="number">3.1415626</span>);            <span class="comment">//s变成："3.142" </span></span><br></pre></td></tr></table></figure>
+<p>3.连接两个字符串</p>
+<p>直接连接：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> dest[<span class="number">256</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> src1[] = &#123;<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>&#125;;</span><br><span class="line"><span class="keyword">char</span> src2[] = &#123;<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>,<span class="string">'4'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">sprintf</span>(dest, <span class="string">"%.5s%.4s"</span>, src1, src2);          <span class="comment">//output:“abcde1234”</span></span><br></pre></td></tr></table></figure>
+<p>截取字符串的某一些字符进行连接：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> dest[<span class="number">256</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> src1[] = &#123;<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>&#125;;</span><br><span class="line"><span class="keyword">char</span> src2[] = &#123;<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>,<span class="string">'4'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">sprintf</span>(dest, <span class="string">"%.*s%.*s"</span>, <span class="number">2</span>, src1, <span class="number">3</span>, src2);         <span class="comment">//output:“ab123”</span></span><br></pre></td></tr></table></figure>
+<p>4.利用返回值</p>
+<p><code>printf</code> 与 <code>sprintf</code> 的返回值是写入的字符数量。</p>
+<p>也就是说每当一次 <code>sprinf</code> 调用结束以后，你无须再调用一次 <code>strlen</code> 便已经知道了结果字符串的长度。如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> len = <span class="built_in">sprintf</span>(s, <span class="string">"%d"</span>, i); </span><br></pre></td></tr></table></figure>
+<p>格式化参量表如下：</p>
+<ul>
+<li>
+<p><code>%d</code> 十进制有符号整数</p>
+</li>
+<li>
+<p><code>%u</code> 十进制无符号整数</p>
+</li>
+<li>
+<p><code>%f</code> 浮点数</p>
+</li>
+<li>
+<p><code>%s</code> 字符串</p>
+</li>
+<li>
+<p><code>%c</code> 单个字符</p>
+</li>
+<li>
+<p><code>%p</code> 指针的值</p>
+</li>
+<li>
+<p><code>%e</code> 指数形式的浮点数</p>
+</li>
+<li>
+<p><code>%x</code>, <code>%X</code> 无符号以十六进制表示的整数</p>
+</li>
+<li>
+<p><code>%0</code> 无符号以八进制表示的整数</p>
+</li>
+<li>
+<p><code>%g</code> 自动选择合适的表示法</p>
+</li>
+</ul>
+<p>可以在 <code>%</code> 和字母之间插进数字表示最大场宽。 例如: <code>%3d</code> 表示输出3位整型数, 不够3位右对齐。 <code>%9.2f</code> 表示输出场宽为9的浮点数, 其中小数位为2, 整数位为6, 小数点占一位, 不够9位右对齐。<code>%8s</code> 表示输出8个字符的字符串, 不够8个字符右对齐。 如果字符串的长度、或整型数位数超过说明的场宽, 将按其实际长度输出。 但对浮点数, 若整数部分位数超过了说明的整数位宽度, 将按实际整数位输出; 若小数部分位数超过了说明的小数位宽度, 则按说明的宽度以四舍五入输出。另外, 若想在输出值前加一些0, 就应在场宽项前加个0。 例如: <code>%04d</code> 表示在输出一个小于4位的数值时, 将在前面补0使其总宽度为4位。如果用浮点数表示字符或整型量的输出格式, 小数点后的数字代表最大宽度, 小数点前的数字代表最小宽度。 例如: <code>%6.9s</code> 表示显示一个长度不小于6且不大于9的字符串。若大于9, 则第9个字符以后的内容将被删除。</p>
+<p>可以在 <code>%</code> 和字母之间加小写字母 <code>l</code> , 表示输出的是长型数。例如: <code>%ld</code> 表示输出 <code>long</code> 整数, <code>%lf</code> 表示输出 <code>double</code> 浮点数。</p>
+<p>可以控制输出左对齐或右对齐, 即在 <code>%</code> 和字母之间加入一个 <code>-</code> 号可说明输出为左对齐, 否则为右对齐。例如: <code>%-7d</code> 表示输出7位整数左对齐，<code>%-10s</code> 表示输出10个字符左对齐。</p>
+<h2 id="字符行式输入输出"><a class="markdownIt-Anchor" href="#字符行式输入输出"></a> 字符/行式输入输出</h2>
+<h3 id="字符输入输出-fgetc-fputc"><a class="markdownIt-Anchor" href="#字符输入输出-fgetc-fputc"></a> 字符输入输出 fgetc fputc</h3>
+<p><code>fgetc</code> 的作用就是将一个字符读出，比较简单，函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fgetc(ch, fp)</span><br></pre></td></tr></table></figure>
+<p>其中fp是文件指针，指向要读出的文件，ch是预先定义好的字符型常量，用以接收从fp所指文件独处的字符</p>
+<p><code>fputc</code> 作用就是实现将一个字符写入文件中，函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fputc(ch，wfp)</span><br></pre></td></tr></table></figure>
+<p>其中fp是文件指针,指向要写入的文件，ch是预先定义好的字符型常量</p>
+<blockquote>
+<p>这两个函数用fclose打开后，一定要判断是否成功打开</p>
+</blockquote>
+<h3 id="fgetsfputs-getsputs"><a class="markdownIt-Anchor" href="#fgetsfputs-getsputs"></a> fgets/fputs gets/puts</h3>
+<p><code>fgets/fputs</code> 和 <code>gets/puts</code> 是两对用于流的单行读写函数。下面先讲 <code>fgets/fputs</code> 函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">fgets</span><span class="params">(chat *s, <span class="keyword">int</span> size, FILE *stream)</span></span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">fputs</span><span class="params">(<span class="keyword">const</span> *<span class="keyword">char</span> s, FILE *stream)</span></span></span><br></pre></td></tr></table></figure>
+<p><code>fgets</code> 是从文件中读取字符串，从参数 <code>stream</code> 所指的文件读入字符并存到参数 <code>s</code> 所指向的内存空间，直到读取到换行符 <code>\n</code> 或者是读到 <code>size - 1</code> 个字符为止，最后会加入 <code>NULL</code> 作为文件结束。在成功的时候返回值返回 <code>s</code> 的指针，失败的时候直接返回 <code>NULL</code> 。</p>
+<p><code>fputs</code> 则是将指定的字符串写入文件内。用来将 <code>s</code> 所指的字符串写入到参数 <code>stream</code> 所指向的文件中。函数成功时返回值为写入字符串的个数，失败则返回 <code>EOF</code> 。</p>
+<p>用法可以如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> str[<span class="number">100</span>];</span><br><span class="line"><span class="built_in">fputs</span>(fgets(str, <span class="number">100</span>, strin), strout); 	<span class="comment">//输入 hello， 输出 hello</span></span><br></pre></td></tr></table></figure>
+<p><code>gets/puts</code> 则是从控制台读取或者输入。 <code>gets</code> 从键盘读取一个字符串，直到遇到换行符 <code>\n</code> 为止。该函数丢弃换行符，添加一个空字符，然后将字符串返回给调用程序。字符串被存储传递给 <code>gets</code> 的 <code>char</code> 指针指向的位置。<code>puts</code> 一般用来在屏幕上显示文本消息，但是不能显示数值变量。接受一个字符串函数，显示该参数并且自动换行。函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">gets</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"><span class="title">puts</span><span class="params">(str)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">puts</span><span class="params">(<span class="string">"Hello World."</span>)</span></span>; == <span class="built_in">printf</span>(<span class="string">"Hello World.\n"</span>);</span><br></pre></td></tr></table></figure>
+<p>gets函数基本与scanf相同，但是存放完毕后，会自动在末尾加上一个结束标记 <code>\0</code> 。此外<code>gets</code> 一次只能读取一个字符串， <code>scanf</code> 则可以同时读取多个字符串。 而且 <code>gets</code> 可以读入包含空格、tab的字符串，直到遇到回车(<code>\n</code>)为止， <code>scanf</code> 不能用来读取空格、tab。</p>
+<h1 id="数学函数mathh"><a class="markdownIt-Anchor" href="#数学函数mathh"></a> 数学函数&lt;math.h&gt;</h1>
+<h2 id="ceil-floor-round函数"><a class="markdownIt-Anchor" href="#ceil-floor-round函数"></a> ceil floor round函数</h2>
+<p>这几个函数都比较简单，都是取整函数，简单说一下，<code>ceil</code> 是取一个大于等于参数值的最小整数， <code>floor</code> 是取小于等于参数值的最大整数。而 <code>round</code> 函数则是四舍五入。函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">ceil</span><span class="params">(<span class="keyword">double</span> x)</span></span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">floor</span><span class="params">(<span class="keyword">double</span> x)</span></span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">round</span><span class="params">(<span class="keyword">double</span> x)</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="字符处理函数ctypeh"><a class="markdownIt-Anchor" href="#字符处理函数ctypeh"></a> 字符处理函数&lt;ctype.h&gt;</h1>
+<h2 id="isupperislower-touppertolower"><a class="markdownIt-Anchor" href="#isupperislower-touppertolower"></a> isupper/islower toupper/tolower</h2>
+<p><code>isupper/islower</code> 作用是用来检测参数是否为大写/小写字母，是则返回TRUE，否则返回NULL(0)。函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isupper</span><span class="params">(<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">islower</span><span class="params">(<span class="keyword">int</span> c)</span></span></span><br></pre></td></tr></table></figure>
+<p>需要注意的是，这两个函数都是宏定义，非真正的函数。</p>
+<p><code>toupper/tolower</code> 是分别用来将小写/大写字母换成大写/小写字母的。使用方法也很简单，返回值为转化后的字母。函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">toupper</span><span class="params">(<span class="keyword">char</span> c)</span></span></span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">tolower</span><span class="params">(<span class="keyword">char</span> c)</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="字符串函数stringh"><a class="markdownIt-Anchor" href="#字符串函数stringh"></a> 字符串函数&lt;string.h&gt;</h1>
+<h2 id="strlen"><a class="markdownIt-Anchor" href="#strlen"></a> strlen</h2>
+<p><code>strlen</code> 函数非常常用，目的就是计算字符串的长度，以 <code>\0</code> 为止。求出的长度不包含 <code>\0</code> 。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> <span class="built_in">strlen</span>(cs)</span><br></pre></td></tr></table></figure>
+<h2 id="strcpystrncpy"><a class="markdownIt-Anchor" href="#strcpystrncpy"></a> strcpy/strncpy</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">strcpy</span><span class="params">(<span class="keyword">char</span> *dest, <span class="keyword">char</span> *src)</span></span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">strncpy</span><span class="params">(<span class="keyword">char</span> *dest, <span class="keyword">char</span> *src, <span class="keyword">size_t</span> n)</span></span></span><br></pre></td></tr></table></figure>
+<p><code>strcpy</code> 把 <code>src</code> 复制到 <code>dest</code> ，要求 <code>dest</code> 指定足够大的字符数组。当 <code>src</code> 串长度 &gt; <code>dest</code> 串长度时，程序仍会将整个 <code>src</code> 串复制到 <code>dest</code> 区域，可是 <code>dest</code> 数组已发生溢出。因此会导致 <code>dest</code> 栈空间溢出以致产生崩溃异常。如果不考虑 <code>src</code> 串的完整性，可以把 <code>dest</code> 数组最后一元素置为 <code>NULL</code> ，从 <code>dest</code> 串长度处插入 <code>NULL</code> 截取字串。<br>
+<code>strncpy</code> 把 <code>src</code> 里的至多n个字符复制到 <code>dest</code> 。要求 <code>dest</code> 指定一个足够大的字符数组。如果 <code>src</code> 里的字符不够n个，就在 <code>dest</code> 里填充空字符。它并不像 <code>strcpy</code> 一样遇到 <code>NULL</code> 才停止复制，而是等凑够n个字符才开始复制。如果n &gt; <code>dest</code>串长度，<code>dest</code> 栈空间溢出产生崩溃异常。一般情况下，使用 <code>strncpy</code> 时，建议将n置为 <code>dest</code> 串长度（除非你将多个 <code>src</code> 串都复制到 <code>dest</code> 数组，并且从 <code>dest</code> 尾部反向操作)，复制完毕后，为保险起见，将 <code>dest</code> 串最后一字符置NULL。当然，无论是 <code>strcpy</code> 还是 <code>strncpy</code>，保证 <code>src</code> 串长度 &lt; <code>dest</code>串长度才是最重要的。</p>
+<h1 id="功能函数stdlibh"><a class="markdownIt-Anchor" href="#功能函数stdlibh"></a> 功能函数&lt;stdlib.h&gt;</h1>
+<h2 id="malloc"><a class="markdownIt-Anchor" href="#malloc"></a> malloc</h2>
+<p><code>malloc</code> 函数是一种分配长度为 <code>num_bytes</code> 字节的内存块的函数，可以向系统申请分配指定 <code>size</code> 个字节的内存空间。<code>malloc</code>的全称是<code>memory allocation</code>，中文叫动态内存分配，当无法知道内存具体位置的时候，想要绑定真正的内存空间，就需要用到动态的分配内存。<br>
+返回类型是 <code>void*</code> 类型。<code>void*</code> 表示未确定类型的指针。C,C++规定，<code>void*</code> 类型可以通过类型转换强制转换为任何其它类型的指针。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> *<span class="title">malloc</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> num_bytes)</span></span></span><br></pre></td></tr></table></figure>
+<p><code>malloc</code>分配的内存大小至少为<code>size</code>参数所指定的字节数</p>
+<p><code>malloc</code>的返回值是一个指针，指向一段可用内存的起始地址</p>
+<p>多次调用<code>malloc</code>所分配的地址不能有重叠部分，除非某次<code>malloc</code>所分配的地址被释放掉</p>
+<p><code>malloc</code>和<code>free</code>函数是配对的，如果申请后不释放就是内存泄露;如果无故释放那就是什么都没有做，释放只能释放一次，如果释放两次及两次以上会出现错误（但是释放空指针例外，释放空指针其实也等于什么都没有做，所以，释放多少次都是可以的）</p>
+<h2 id="atofatoiatol"><a class="markdownIt-Anchor" href="#atofatoiatol"></a> atof/atoi/atol</h2>
+<p>atof将字符串转换成浮点型数，atoi函数将字符串转换成整型数，atol将字符串转换成长整型数。函数比较简单，原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">atof</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *nptr)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">atoi</span><span class="params">(<span class="keyword">const</span>  <span class="keyword">char</span> *  nptr)</span></span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">atol</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *nptr)</span></span></span><br></pre></td></tr></table></figure>
+<p>这三个函数都是会跳过前面的空格字符，直到遇上数字或正负符号才开始做转换，而再遇到非数字或字符串结束时 <code>'\0'</code> 才结束转换，并将结果返回。</p>
+</div></article></div></main><footer><div class="paginator"><a href="/技术/cjn8l753k00194durih7or08x.html" class="next">NEXT</a></div><div class="copyright"><p>© 2016 - 2018 <a href="https://blog.knightyui.com">knightyui</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
